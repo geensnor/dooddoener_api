@@ -29,7 +29,7 @@ if ($jsonData === false) {
         // Select random lines based on the count
         $randomLines = array_rand($lines, $count);
 
-        // If "expanded" is set, $randomLines will be an array; otherwise, it will be a single index
+        // If "expanded" is set, $randomLines will be an array
         $randomLines = is_array($randomLines) ? $randomLines : [$randomLines];
 
         // Prepare the response
