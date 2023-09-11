@@ -21,7 +21,7 @@ if ($jsonData === false) {
         ];
     } else {
         // Check if the "expanded" query parameter is set
-        $expanded = isset($_GET['expanded']) && $_GET['expanded'] === 'true';
+        $expanded = isset($_GET['expanded']);
 
         // Determine the number of lines to display (default to 1 if "expanded" is not set)
         $count = $expanded ? 10 : 1;
