@@ -34,7 +34,7 @@ if ($jsonData === false) {
 
         // Prepare the response
         $response = [
-            'random_lines' => array_map(function ($index) use ($lines) {
+            'dooddoener' => array_map(function ($index) use ($lines) {
                 return $lines[$index];
             }, $randomLines),
         ];
