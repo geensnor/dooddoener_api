@@ -2,8 +2,11 @@
 // Define the JSON file path
 include "include.php";
 
-// Read the JSON file
-$jsonData = file_get_contents($jsonFilePath);
+// Validate and sanitize the "expanded" query parameter
+$expanded = isset($_GET['expanded']) ? true : false;
+
+// Read the JSON file securely
+$jsonData = file_get_contents($jsonFilePath, true);
 
 // Check if data was successfully read
 if ($jsonData === false) {
@@ -12,7 +15,7 @@ if ($jsonData === false) {
     ];
 } else {
     // Parse the JSON data into an array
-    $lines = json_decode($jsonData);
+    $lines = json_decode($jsonData, true);
 
     // Check if JSON decoding was successful
     if ($lines === null) {
@@ -20,16 +23,13 @@ if ($jsonData === false) {
             'error' => 'Failed to parse JSON data.',
         ];
     } else {
-        // Check if the "expanded" query parameter is set
-        $expanded = isset($_GET['expanded']);
-
         // Determine the number of lines to display (default to 1 if "expanded" is not set)
-        $count = $expanded ? 10 : 1;
+        $count = $expanded ? min(count($lines), 10) : 1;
 
         // Select random lines based on the count
         $randomLines = array_rand($lines, $count);
 
-        // If "expanded" is set
+        // Ensure $randomLines is always an array
         $randomLines = is_array($randomLines) ? $randomLines : [$randomLines];
 
         // Prepare the response
@@ -41,8 +41,9 @@ if ($jsonData === false) {
     }
 }
 
-// Set the Content-Type header to JSON
+// Set security headers
 header('Content-Type: application/json');
+header('Content-Security-Policy: default-src https:');
 
 // Output the response as JSON
 echo json_encode($response);
